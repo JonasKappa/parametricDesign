@@ -17,6 +17,7 @@ float yMultiplier3 = 0.00002;
 float yMultiplier4 = 0.01;
 int pointAmt = 1;
 int pointSize = 20;
+float randomTimeIncrementor = 100;
 
 // Sliders
 Slider transparencySlider;
@@ -31,14 +32,19 @@ Slider yMultiplier3Slider;
 Slider yMultiplier4Slider;
 Slider pointAmtSlider;
 Slider pointSizeSlider;
+Slider randomTimeIncrementorSlider;
 
 // Buttons
 Button saveParams;
 Button loadParams;
 
+// CheckBoxes
+CheckBox randomMode;
+
 // UI Lists
 ArrayList<Slider> sliders = new ArrayList<Slider>();
 ArrayList<Button> buttons = new ArrayList<Button>();
+ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
 
 // savings
 JSONObject toSave;
@@ -73,6 +79,11 @@ void draw() {
   // increase global loop
   globalX += 1;
   
+  // update random parameters
+  if (randomMode.getValue() && globalX % randomTimeIncrementorSlider.getValue() == 0) {
+     randomizeParameters();
+  }
+  
   // UI Background
   fill(100);
   noStroke();
@@ -84,12 +95,18 @@ void draw() {
   for (Button b : buttons) {
     b.update();
   }
+  for (CheckBox c : checkBoxes) {
+    c.update(); 
+  }
   // UI show
   for (Slider s : sliders) {
     s.show();
   }
   for (Button b : buttons) {
     b.show();
+  }
+  for (CheckBox c : checkBoxes) {
+    c.show(); 
   }
 }
 
@@ -100,6 +117,9 @@ void mousePressed() {
   }
   for (Button b : buttons) {
     b.callOnClick();
+  }
+  for (CheckBox c : checkBoxes) {
+    c.click(); 
   }
 }
 
@@ -130,6 +150,8 @@ void setupUI() {
   yMultiplier4Slider = new Slider(w+50, w+750, 975, 0, 0.02, yMultiplier4,"y-Multiplier 4");
   pointAmtSlider = new Slider(w+50, w+750, 1075, 1, 100, pointAmt,"Amount of points",false);
   pointSizeSlider = new Slider(w+50, w+750, 1175, 1, 50, pointSize,"Size of points",false);
+  randomTimeIncrementorSlider = new Slider(w+50, w+750, 1300, 1, 1000, randomTimeIncrementor,"Number of Frames for random Parameters",false);
+  
   sliders.add(transparencySlider);
   sliders.add(fillOfBackgroundSlider);
   sliders.add(xMultiplier1Slider);
@@ -142,6 +164,11 @@ void setupUI() {
   sliders.add(yMultiplier4Slider);
   sliders.add(pointAmtSlider);
   sliders.add(pointSizeSlider);
+  sliders.add(randomTimeIncrementorSlider);
+  
+  randomMode = new CheckBox(new PVector(w+50,1225),"Random Mode");
+  
+  checkBoxes.add(randomMode);
   
   saveParams = new Button(new PVector(w+50,1370));
   loadParams = new Button(new PVector(w+425,1370));
@@ -177,6 +204,21 @@ void setupUI() {
   
   buttons.add(saveParams);
   buttons.add(loadParams);
+}
+
+void randomizeParameters() {
+  transparencySlider.randomizeValue();
+  fillOfBackgroundSlider.randomizeValue();
+  xMultiplier1Slider.randomizeValue();
+  xMultiplier2Slider.randomizeValue();
+  xMultiplier3Slider.randomizeValue();
+  xMultiplier4Slider.randomizeValue();
+  yMultiplier1Slider.randomizeValue();
+  yMultiplier2Slider.randomizeValue();
+  yMultiplier3Slider.randomizeValue();
+  yMultiplier4Slider.randomizeValue();
+  pointAmtSlider.randomizeValue();
+  pointSizeSlider.randomizeValue();
 }
 
 void saveToSelectedFile(File selection) {
