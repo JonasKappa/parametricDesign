@@ -3,10 +3,23 @@ class Button {
   PVector pos; // top left corner
   boolean over = false;
   String label = "";
+  int label_size = 30;
   ICallback cb = null;
   
   public Button(PVector pos) {
     this.pos = pos;
+  }
+  
+  public void setWidth(float w) {
+    btn_width = w; 
+  }
+  
+  public void setHeight(float h) {
+    btn_height = h; 
+  }
+  
+  public void setLabelSize(int s) {
+    label_size = s; 
   }
   
   public void setLabel(String l) {
@@ -33,7 +46,7 @@ class Button {
     noStroke();
     rect(pos.x, pos.y, btn_width, btn_height, btn_radius);
     
-    textSize(30);
+    textSize(label_size);
     fill(0);
     textAlign(CENTER, CENTER);
     text(label, pos.x + btn_width/2, pos.y + btn_height/2);

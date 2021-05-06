@@ -17,7 +17,7 @@ float yMultiplier3 = 0.00002;
 float yMultiplier4 = 0.01;
 int pointAmt = 1;
 int pointSize = 20;
-float randomTimeIncrementor = 100;
+float randomTimeIncrementor = 20;
 
 // Sliders
 Slider transparencySlider;
@@ -37,6 +37,7 @@ Slider randomTimeIncrementorSlider;
 // Buttons
 Button saveParams;
 Button loadParams;
+Button getRandomParams;
 
 // CheckBoxes
 CheckBox randomMode;
@@ -139,7 +140,7 @@ void mouseReleased() {
 
 void setupUI() {
   transparencySlider = new Slider(w+50, w+750, 75, 0, 100, transparency,"Transparency of Background", false);
-  fillOfBackgroundSlider = new Slider(w+50, w+750, 175, 0, 255, fillOfBackground,"Fill of Background", false);
+  fillOfBackgroundSlider = new Slider(w+50, w+750, 175, 0, 200, fillOfBackground,"Fill of Background", false);
   xMultiplier1Slider = new Slider(w+50, w+750, 275, 0, 0.01, xMultiplier1,"x-Multiplier 1");
   xMultiplier2Slider = new Slider(w+50, w+750, 375, 0, 0.001, xMultiplier2,"x-Multiplier 2");
   xMultiplier3Slider = new Slider(w+50, w+750, 475, 0, 0.001, xMultiplier3,"x-Multiplier 3");
@@ -172,9 +173,11 @@ void setupUI() {
   
   saveParams = new Button(new PVector(w+50,1370));
   loadParams = new Button(new PVector(w+425,1370));
+  getRandomParams = new Button(new PVector(w+425, 1225));
   
   saveParams.setLabel("Save");
   loadParams.setLabel("Load");
+  getRandomParams.setLabel("Get Random Params");
   
   saveParams.onClick(new ICallback() {
     public void run() {
@@ -201,9 +204,18 @@ void setupUI() {
        selectInput("Choose a p3pd File to load", "loadParams");
     }
   });
+  getRandomParams.onClick(new ICallback() {
+    public void run() {
+       randomizeParameters();
+    }
+  });
+  
+  getRandomParams.setHeight(30);
+  getRandomParams.setLabelSize(20);
   
   buttons.add(saveParams);
   buttons.add(loadParams);
+  buttons.add(getRandomParams);
 }
 
 void randomizeParameters() {
