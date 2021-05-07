@@ -42,11 +42,16 @@ Button resetLoop;
 
 // CheckBoxes
 CheckBox randomMode;
+CheckBox randomModeWithoutBackground;
+
+// Separators
+Separator separator;
 
 // UI Lists
 ArrayList<Slider> sliders = new ArrayList<Slider>();
 ArrayList<Button> buttons = new ArrayList<Button>();
 ArrayList<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+ArrayList<Separator> separators = new ArrayList<Separator>();
 
 // savings
 JSONObject toSave;
@@ -110,6 +115,9 @@ void draw() {
   for (CheckBox c : checkBoxes) {
     c.show(); 
   }
+  for (Separator s : separators) {
+    s.show(); 
+  }
 }
 
 void mousePressed() {
@@ -140,18 +148,20 @@ void mouseReleased() {
 }
 
 void setupUI() {
+  // Sliders
+  
   transparencySlider = new Slider(w+50, w+750, 75, 0, 100, transparency,"Transparency of Background", false);
-  fillOfBackgroundSlider = new Slider(w+50, w+750, 175, 0, 200, fillOfBackground,"Fill of Background", false);
-  xMultiplier1Slider = new Slider(w+50, w+750, 275, 0, 0.01, xMultiplier1,"x-Multiplier 1");
-  xMultiplier2Slider = new Slider(w+50, w+750, 375, 0, 0.001, xMultiplier2,"x-Multiplier 2");
-  xMultiplier3Slider = new Slider(w+50, w+750, 475, 0, 0.001, xMultiplier3,"x-Multiplier 3");
-  xMultiplier4Slider = new Slider(w+50, w+750, 575, 0, 0.02, xMultiplier4,"x-Multiplier 4");
-  yMultiplier1Slider = new Slider(w+50, w+750, 675, 0, 0.01, yMultiplier1,"y-Multiplier 1");
-  yMultiplier2Slider = new Slider(w+50, w+750, 775, 0, 0.001, yMultiplier2,"y-Multiplier 2");
-  yMultiplier3Slider = new Slider(w+50, w+750, 875, 0, 0.001, yMultiplier3,"y-Multiplier 3");
-  yMultiplier4Slider = new Slider(w+50, w+750, 975, 0, 0.02, yMultiplier4,"y-Multiplier 4");
-  pointAmtSlider = new Slider(w+50, w+750, 1075, 1, 100, pointAmt,"Amount of points",false);
-  pointSizeSlider = new Slider(w+50, w+750, 1175, 1, 50, pointSize,"Size of points",false);
+  fillOfBackgroundSlider = new Slider(w+50, w+750, 165, 0, 200, fillOfBackground,"Fill of Background", false);
+  xMultiplier1Slider = new Slider(w+50, w+750, 255, 0, 0.01, xMultiplier1,"x-Multiplier 1");
+  xMultiplier2Slider = new Slider(w+50, w+750, 345, 0, 0.001, xMultiplier2,"x-Multiplier 2");
+  xMultiplier3Slider = new Slider(w+50, w+750, 435, 0, 0.001, xMultiplier3,"x-Multiplier 3");
+  xMultiplier4Slider = new Slider(w+50, w+750, 525, 0, 0.02, xMultiplier4,"x-Multiplier 4");
+  yMultiplier1Slider = new Slider(w+50, w+750, 615, 0, 0.01, yMultiplier1,"y-Multiplier 1");
+  yMultiplier2Slider = new Slider(w+50, w+750, 705, 0, 0.001, yMultiplier2,"y-Multiplier 2");
+  yMultiplier3Slider = new Slider(w+50, w+750, 795, 0, 0.001, yMultiplier3,"y-Multiplier 3");
+  yMultiplier4Slider = new Slider(w+50, w+750, 885, 0, 0.02, yMultiplier4,"y-Multiplier 4");
+  pointAmtSlider = new Slider(w+50, w+750, 975, 1, 100, pointAmt,"Amount of points",false);
+  pointSizeSlider = new Slider(w+50, w+750, 1065, 1, 50, pointSize,"Size of points",false);
   randomTimeIncrementorSlider = new Slider(w+50, w+750, 1300, 1, 1000, randomTimeIncrementor,"Number of Frames for random Parameters",false);
   
   sliders.add(transparencySlider);
@@ -168,14 +178,19 @@ void setupUI() {
   sliders.add(pointSizeSlider);
   sliders.add(randomTimeIncrementorSlider);
   
+  // CheckBoxes
+  
   randomMode = new CheckBox(new PVector(w+50,1225),"Random Mode");
+  randomModeWithoutBackground = new CheckBox(new PVector(w+50,1225),"w/o Background");
   
   checkBoxes.add(randomMode);
   
+  // Buttons
+  
   saveParams = new Button(new PVector(w+50,1370));
   loadParams = new Button(new PVector(w+425,1370));
-  getRandomParams = new Button(new PVector(w+425, 1225));
-  resetLoop = new Button(new PVector(w+575, 1225));
+  getRandomParams = new Button(new PVector(w+50, 1155));
+  resetLoop = new Button(new PVector(w+425, 1155));
   
   saveParams.setLabel("Save");
   loadParams.setLabel("Load");
@@ -212,18 +227,27 @@ void setupUI() {
        randomizeParameters();
     }
   });
+  resetLoop.onClick(new ICallback() {
+    public void run() {
+      globalX = 0;
+    }
+  });
   
   resetLoop.setHeight(30);
   resetLoop.setLabelSize(20);
-  resetLoop.setWidth(150);
   getRandomParams.setHeight(30);
   getRandomParams.setLabelSize(20);
-  getRandomParams.setWidth(150);
   
   buttons.add(saveParams);
   buttons.add(loadParams);
   buttons.add(getRandomParams);
   buttons.add(resetLoop);
+  
+  // Separators
+  
+  separator = new Separator(w,1140,800);
+  
+  separators.add(separator);
 }
 
 void randomizeParameters() {
