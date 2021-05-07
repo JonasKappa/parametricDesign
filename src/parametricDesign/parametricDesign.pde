@@ -38,6 +38,7 @@ Slider randomTimeIncrementorSlider;
 Button saveParams;
 Button loadParams;
 Button getRandomParams;
+Button resetLoop;
 
 // CheckBoxes
 CheckBox randomMode;
@@ -174,10 +175,12 @@ void setupUI() {
   saveParams = new Button(new PVector(w+50,1370));
   loadParams = new Button(new PVector(w+425,1370));
   getRandomParams = new Button(new PVector(w+425, 1225));
+  resetLoop = new Button(new PVector(w+575, 1225));
   
   saveParams.setLabel("Save");
   loadParams.setLabel("Load");
-  getRandomParams.setLabel("Get Random Params");
+  getRandomParams.setLabel("Randomize");
+  resetLoop.setLabel("Reset Loop");
   
   saveParams.onClick(new ICallback() {
     public void run() {
@@ -210,12 +213,17 @@ void setupUI() {
     }
   });
   
+  resetLoop.setHeight(30);
+  resetLoop.setLabelSize(20);
+  resetLoop.setWidth(150);
   getRandomParams.setHeight(30);
   getRandomParams.setLabelSize(20);
+  getRandomParams.setWidth(150);
   
   buttons.add(saveParams);
   buttons.add(loadParams);
   buttons.add(getRandomParams);
+  buttons.add(resetLoop);
 }
 
 void randomizeParameters() {
