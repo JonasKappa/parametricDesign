@@ -56,6 +56,9 @@ ArrayList<Separator> separators = new ArrayList<Separator>();
 // savings
 JSONObject toSave;
 
+// points to show
+ArrayList<Point> points = new ArrayList<Point>();
+
 void setup() {
   size(2300,1500);
   // set UI
@@ -70,25 +73,32 @@ void draw() {
   
   stroke(255);
   // generation of the parametric design x,y values
-  ArrayList<PVector> points = new ArrayList<PVector>();
+  
   float amt = pointAmtSlider.getValue();
-  for (int i = 1; i <= w; i += (w/amt)) {
+  setupPoints(amt);
+  //for (int i = 1; i <= w; i += (w/amt)) {
+  for (int index = 0; index < amt; index++) {
+    float i = 1 + index * (w/amt);
     float x = sin(millis()*xMultiplier1Slider.getValue()+(i*xMultiplier4Slider.getValue())+globalX*xMultiplier2Slider.getValue()*sin(millis()*xMultiplier3Slider.getValue())) * w/2 + w/2;
     float y = sin(millis()*yMultiplier1Slider.getValue()+(i*yMultiplier4Slider.getValue())+x*yMultiplier2Slider.getValue()*sin(millis()*yMultiplier3Slider.getValue())) * h/2 + h/2;
-    points.add(new PVector(x,y));
+    points.get(index).applyDestination(new PVector(x,y));
   }
   // draw ellipses
-  fill(255);
   float size = pointSizeSlider.getValue();
-  for (PVector p : points) {
-    ellipse(p.x,p.y,size,size);
+  for (Point p : points) {
+    p.show(size);
   }
   // increase global loop
   globalX += 1;
   
+  // update points
+  for (Point p : points) {
+    p.update();
+  }
+  
   // update random parameters
   if (randomMode.getValue() && globalX % randomTimeIncrementorSlider.getValue() == 0) {
-     randomizeParameters();
+    randomizeParameters();
   }
   
   // UI Background
@@ -147,6 +157,21 @@ void mouseReleased() {
   }
 }
 
+void setupPoints(float amt) {
+  int p_size = points.size();
+  if (p_size == amt) return;
+  if (p_size < amt) {
+    // add new points
+    for (int i = 0; i < amt - p_size; i++) {
+       points.add(new Point(new PVector(w/2,h/2),1,1));
+    }
+  } else {
+    for (int i = 0; i < p_size - amt; i++) {
+       points.remove(points.size()-1);
+    }
+  }
+}
+
 void setupUI() {
   // Sliders
   
@@ -181,9 +206,10 @@ void setupUI() {
   // CheckBoxes
   
   randomMode = new CheckBox(new PVector(w+50,1225),"Random Mode");
-  randomModeWithoutBackground = new CheckBox(new PVector(w+50,1225),"w/o Background");
+  randomModeWithoutBackground = new CheckBox(new PVector(w+250,1225),"w/o Background");
   
   checkBoxes.add(randomMode);
+  checkBoxes.add(randomModeWithoutBackground);
   
   // Buttons
   
@@ -245,14 +271,16 @@ void setupUI() {
   
   // Separators
   
-  separator = new Separator(w,1140,800);
+  separator = new Separator(w,1120,800);
   
   separators.add(separator);
 }
 
 void randomizeParameters() {
-  transparencySlider.randomizeValue();
-  fillOfBackgroundSlider.randomizeValue();
+  if (!randomModeWithoutBackground.getValue()) {
+    transparencySlider.randomizeValue();
+    fillOfBackgroundSlider.randomizeValue();
+  }
   xMultiplier1Slider.randomizeValue();
   xMultiplier2Slider.randomizeValue();
   xMultiplier3Slider.randomizeValue();
@@ -261,8 +289,11 @@ void randomizeParameters() {
   yMultiplier2Slider.randomizeValue();
   yMultiplier3Slider.randomizeValue();
   yMultiplier4Slider.randomizeValue();
-  pointAmtSlider.randomizeValue();
+  //pointAmtSlider.randomizeValue();
   pointSizeSlider.randomizeValue();
+  for (Point p : points) {
+    p.setSnap(false);
+  }
 }
 
 void saveToSelectedFile(File selection) {

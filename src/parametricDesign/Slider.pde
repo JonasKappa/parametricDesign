@@ -7,12 +7,12 @@ class Slider {
   String name;
   
   public void randomizeValue() {
-     float r = random(min, max);
-     if (continuos) {
-       setValue(r); 
-     } else {
-       setValue(round(r)); 
-     }
+    float r = random(min, max);
+    if (continuos) {
+      setValue(r); 
+    } else {
+      setValue(round(r)); 
+    }
   }
   
   public Slider(float s, float e, float y, float min, float max, float val, String n) {
