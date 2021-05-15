@@ -181,7 +181,7 @@ void setupUI() {
   // CheckBoxes
   
   randomMode = new CheckBox(new PVector(w+50,1225),"Random Mode");
-  randomModeWithoutBackground = new CheckBox(new PVector(w+150,1225),"w/o Background");
+  randomModeWithoutBackground = new CheckBox(new PVector(w+250,1225),"w/o Background");
   
   checkBoxes.add(randomMode);
   checkBoxes.add(randomModeWithoutBackground);
@@ -246,7 +246,7 @@ void setupUI() {
   
   // Separators
   
-  separator = new Separator(w,1140,800);
+  separator = new Separator(w,1125,800);
   
   separators.add(separator);
 }
