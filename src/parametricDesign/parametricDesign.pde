@@ -181,9 +181,10 @@ void setupUI() {
   // CheckBoxes
   
   randomMode = new CheckBox(new PVector(w+50,1225),"Random Mode");
-  randomModeWithoutBackground = new CheckBox(new PVector(w+50,1225),"w/o Background");
+  randomModeWithoutBackground = new CheckBox(new PVector(w+150,1225),"w/o Background");
   
   checkBoxes.add(randomMode);
+  checkBoxes.add(randomModeWithoutBackground);
   
   // Buttons
   
@@ -251,8 +252,10 @@ void setupUI() {
 }
 
 void randomizeParameters() {
-  transparencySlider.randomizeValue();
-  fillOfBackgroundSlider.randomizeValue();
+  if (!randomModeWithoutBackground.getValue()) {
+    transparencySlider.randomizeValue();
+    fillOfBackgroundSlider.randomizeValue();
+  }
   xMultiplier1Slider.randomizeValue();
   xMultiplier2Slider.randomizeValue();
   xMultiplier3Slider.randomizeValue();
